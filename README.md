@@ -11,3 +11,6 @@ Hearts - gamedevmarket.net
 BgMusic, ExplosionSounds - musiclab.chromeexperiments.com
 
 shootingSound - fesliyanstudios.com
+
+BgImage - https://www.pinterest.com/pin/43769427616582286/
+
