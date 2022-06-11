@@ -1,0 +1,1 @@
+{"shipSpeed": 3, "shipDmg": 5, "attackSpeed": 1, "shipHealth": 1, "money": 40, "stage": 1}
