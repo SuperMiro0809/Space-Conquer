@@ -36,13 +36,19 @@ for skin in skins:
 
 
 def generateFile():
+    skinArr = []
+
+    for skin in skins:
+        skinArr.append({'title': skin.title, 'equipped': skin.equipped})
+
     data = {
         "shipSpeed": shipSpeed,
         "shipDmg": shipDmg,
         "attackSpeed": attackSpeed,
         "shipHealth": shipHealth,
         "money": money,
-        "stage": stage
+        "stage": stage,
+        "skins": skinArr
     }
 
     with open('data_save.txt', 'w') as data_save_file:
