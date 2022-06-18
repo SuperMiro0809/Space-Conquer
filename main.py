@@ -1,8 +1,10 @@
 import pygame
+import os.path
 from button import Button
 from textWithOutline import Text
 import json
 from skin import Skin
+from slider import SLIDER
 pygame.init()
 
 FPS = 60
