@@ -25,7 +25,7 @@ shipHealth = 0
 money = 0
 stage = 1
 skins = [
-    Skin('Ship 1', 'Assets/Ship1/Ship1.png', 'Assets/Ship1/Exhaust/Normal_flight/Exhaust1/exhaust4.png', True)
+    Skin('Ship 1', 'Assets/Ship1/Ship1.png', 'Assets/Ship1/Exhaust/Normal_flight/Exhaust1/exhaust4.png', 'Assets/Shots/Shot1/shot1_asset.png', True)
 ]
 selectedSkin = None
 
@@ -85,7 +85,7 @@ soundSlider = SLIDER(win, "Sounds", WIDTH // 2, HEIGHT // 2 - 100, 300, soundVol
 #GAME
 SPACESHIP_IMAGE = pygame.transform.scale(pygame.image.load(selectedSkin.image), (84, 84))
 SPACESHIP_EXHAUST_IMAGE = pygame.transform.scale(pygame.image.load(selectedSkin.exhaust), (32, 32))
-PROJECTILE_IMAGE = pygame.transform.scale(pygame.image.load('Assets/Shots/Shot1/shot1_asset.png'), (32, 32))
+PROJECTILE_IMAGE = pygame.transform.scale(pygame.image.load(selectedSkin.projectile), (32, 32))
 METEOR_IMAGE = pygame.transform.scale(pygame.image.load('Assets/Meteor/meteor_big.png'), (84, 68))
 bullets = []
 meteors = []
@@ -144,31 +144,37 @@ BACK_SHOP_BUTTON = Button(100, HEIGHT - 50, shopButtonImg)
 
 ship1SkinImage = 'Assets/Ship1/Ship1.png'
 ship1ExhaustImage = 'Assets/Ship1/Exhaust/Normal_flight/Exhaust1/exhaust4.png'
+ship1ProjectileImage = 'Assets/Shots/Shot1/shot1_asset.png'
 ship1Skin = pygame.transform.scale(pygame.image.load(ship1SkinImage),(84,84))
 ship1Exhaust = pygame.transform.scale(pygame.image.load(ship1ExhaustImage), (32, 32))
 
 ship2SkinImage = 'Assets/Ship2/Ship2.png'
 ship2ExhaustImage = 'Assets/Ship2/Exhaust/Normal_flight/Exhaust1/exhaust4.png'
+ship2ProjectileImage = 'Assets/Shots/Shot2/shot2_asset.png'
 ship2Skin = pygame.transform.scale(pygame.image.load(ship2SkinImage),(84,84))
 ship2Exhaust = pygame.transform.scale(pygame.image.load(ship2ExhaustImage), (32, 32))
 
 ship3SkinImage = 'Assets/Ship3/Ship3.png'
 ship3ExhaustImage = 'Assets/Ship3/Exhaust/Normal_flight/Exhaust1/exhaust4.png'
+ship3ProjectileImage = 'Assets/Shots/Shot3/shot3_asset.png'
 ship3Skin = pygame.transform.scale(pygame.image.load(ship3SkinImage),(84,84))
 ship3Exhaust = pygame.transform.scale(pygame.image.load(ship3ExhaustImage), (32, 32))
 
 ship4SkinImage = 'Assets/Ship4/Ship4.png'
 ship4ExhaustImage = 'Assets/Ship4/Exhaust/Normal_flight/Exhaust1/exhaust4.png'
+ship4ProjectileImage = 'Assets/Shots/Shot4/shot4_asset.png'
 ship4Skin = pygame.transform.scale(pygame.image.load(ship4SkinImage),(84,84))
 ship4Exhaust = pygame.transform.scale(pygame.image.load(ship4ExhaustImage), (32, 32))
 
 ship5SkinImage = 'Assets/Ship5/Ship5.png'
 ship5ExhaustImage = 'Assets/Ship5/Exhaust/Normal_flight/Exhaust1/exhaust4.png'
+ship5ProjectileImage = 'Assets/Shots/Shot5/shot5_asset.png'
 ship5Skin = pygame.transform.scale(pygame.image.load(ship5SkinImage),(84,84))
 ship5Exhaust = pygame.transform.scale(pygame.image.load(ship5ExhaustImage), (32, 32))
 
 ship6SkinImage = 'Assets/Ship6/Ship6.png'
 ship6ExhaustImage = 'Assets/Ship6/Exhaust/Normal_flight/Exhaust1/exhaust4.png'
+ship6ProjectileImage = 'Assets/Shots/Shot6/shot6_asset.png'
 ship6Skin = pygame.transform.scale(pygame.image.load(ship6SkinImage),(84,84))
 ship6Exhaust = pygame.transform.scale(pygame.image.load(ship6ExhaustImage), (32, 32))
 
@@ -182,5 +188,4 @@ import mainMenu
 if __name__=="__main__":
     pygame.mixer.music.play(-1)
     mainMenu.menu()
-    # skinShop.shop()
     pygame.quit()
