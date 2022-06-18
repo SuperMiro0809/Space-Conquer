@@ -1,5 +1,5 @@
 import pygame
-import main
+import os.path
 from textWithOutline import Text
 
 class moneyEarned:
@@ -37,5 +37,30 @@ class asteroidExplosion:
             else:
                 return True
         return False
-class bulletExplosions:
-    def __init__(self):
+
+
+
+class projectileExplosion:
+    def __init__(self,timeBetween,x,y,size,skin):
+        self.explosionStage = 1
+        self.timeBetween = timeBetween
+        self.size = size
+        self.x = x
+        self.y = y
+        self.skin = skin
+        self.width = 64*self.size
+        self.height = 64*self.size
+        self.image = pygame.transform.scale(pygame.image.load(f'Assets/Shots/Shot{self.skin}/shot{self.skin}_exp{self.explosionStage}.png'), (self.width, self.height))
+        self.timer = 0
+    def draw(self,surface):
+        surface.blit(self.image,(self.x-self.width//2 + 16,self.y-self.height//2 + 16))
+        self.timer+=1
+        if self.timer == self.timeBetween:
+            self.timer = 0
+            self.explosionStage += 1
+            if os.path.exists(f'Assets/Shots/Shot{self.skin}/shot{self.skin}_exp{self.explosionStage}.png'):
+                self.image = pygame.transform.scale(pygame.image.load(f'Assets/Shots/Shot{self.skin}/shot{self.skin}_exp{self.explosionStage}.png'), (self.width, self.height))
+                return False
+            else:
+                return True
+        return False
