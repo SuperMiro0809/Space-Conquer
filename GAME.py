@@ -7,7 +7,7 @@ from spaceship import Spaceship, Projectile
 from fade import fadeOut
 from shop import shop
 from textWithOutline import Text
-from particles import moneyEarned,asteroidExplosion
+from particles import moneyEarned,asteroidExplosion,projectileExplosion
 
 x = 50
 y = main.HEIGHT / 2
@@ -184,6 +184,7 @@ def game():
                         main.meteorIndexes.append(main.meteors.index(meteor))
                         main.explosions.append(asteroidExplosion(10, meteor.hitbox.x + meteor.width // 2, meteor.hitbox.y + meteor.height // 2, 3))
                     main.bulletIndexes.append(main.bullets.index(bullet))
+                    main.explosions.append(projectileExplosion(10,bullet.x ,bullet.y,1,main.selectedSkin.title[5]))
 
             if SPACESHIP.hitbox.colliderect(meteor.hitbox):
                 current_time_hit = pygame.time.get_ticks()
