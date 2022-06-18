@@ -86,6 +86,8 @@ def startGame():
     main.moneyTexts = []
     main.stageText = Text(main.WIDTH//2,main.HEIGHT//2,f"LEVEL {main.stage}",50,(255,255,255),False)
     main.timerText = Text(main.WIDTH - 100, 50, f"03:00", 50, (255, 255, 255), False)
+    SPACESHIP.image = main.SPACESHIP_IMAGE
+    SPACESHIP.exhaust_image = main.SPACESHIP_EXHAUST_IMAGE
     SPACESHIP.resetPos(main.win)
 
 def finishGame():

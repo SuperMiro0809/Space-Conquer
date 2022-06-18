@@ -33,7 +33,7 @@ def shop():
                     if skin == None:
                         if main.money - 1000 >= 0:
                             main.money -= 1000
-                            main.skins.append(Skin('Ship 2', main.ship2Skin, main.ship2Exhaust, False))
+                            main.skins.append(Skin('Ship 2', main.ship2SkinImage, main.ship2ExhaustImage, False))
                     else:
                         equipSkin(skin)
                     
@@ -43,7 +43,7 @@ def shop():
                     if skin == None:
                         if main.money - 1000 >= 0:
                             main.money -= 1000
-                            main.skins.append(Skin('Ship 3', main.ship3Skin, main.ship3Exhaust, False))
+                            main.skins.append(Skin('Ship 3', main.ship3SkinImage, main.ship3ExhaustImage, False))
                     else:
                         equipSkin(skin)
 
@@ -53,7 +53,7 @@ def shop():
                     if skin == None:
                         if main.money - 1000 >= 0:
                             main.money -= 1000
-                            main.skins.append(Skin('Ship 4', main.ship4Skin, main.ship4Exhaust, False))
+                            main.skins.append(Skin('Ship 4', main.ship4SkinImage, main.ship4ExhaustImage, False))
                     else:
                         equipSkin(skin)
                     
@@ -63,7 +63,7 @@ def shop():
                     if skin == None:
                         if main.money - 1000 >= 0:
                             main.money -= 1000
-                            main.skins.append(Skin('Ship 5', main.ship5Skin, main.ship5Exhaust, False))
+                            main.skins.append(Skin('Ship 5', main.ship5SkinImage, main.ship5ExhaustImage, False))
                     else:
                         equipSkin(skin)
                     
@@ -73,7 +73,7 @@ def shop():
                     if skin == None:
                         if main.money - 1000 >= 0:
                             main.money -= 1000
-                            main.skins.append(Skin('Ship 6', main.ship6Skin, main.ship6Exhaust, False))
+                            main.skins.append(Skin('Ship 6', main.ship6SkinImage, main.ship6ExhaustImage, False))
                     else:
                         equipSkin(skin)
                     
@@ -167,3 +167,5 @@ def equipSkin(skin):
             s.equipped = False
         skin.equipped = True
         main.selectedSkin = skin
+        main.SPACESHIP_IMAGE = pygame.transform.scale(pygame.image.load(main.selectedSkin.image), (84, 84))
+        main.SPACESHIP_EXHAUST_IMAGE = pygame.transform.scale(pygame.image.load(main.selectedSkin.exhaust), (32, 32))
