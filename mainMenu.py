@@ -4,6 +4,7 @@ import os.path
 import main
 from GAME import game
 from fade import fadeOut
+from OPTIONS import options
 
 def menu():
     drawMenu()
@@ -26,6 +27,11 @@ def menu():
                 drawMenu()
         elif main.EXIT_BUTTON.check():
             main.run = False
+        elif main.OPTIONS_BUTTON.check():
+            main.runMenu = False
+            options()
+            if main.run:
+                drawMenu()
 
 
         pygame.display.update()
@@ -34,6 +40,7 @@ def menu():
                 main.run = False
     if main.shipDmg!=0:
         main.generateFile()
+    main.generateSaveOptionsFile()
     main.win.fill((0,0,0))
 
 def drawMenu():
@@ -44,6 +51,7 @@ def drawMenu():
     else:
         main.PLAY_BUTTON.rect.center = (main.WIDTH / 2, (main.startBtnHeight + 30) * 2)
     main.PLAY_BUTTON.draw(main.win)
+    main.OPTIONS_BUTTON.draw(main.win)
     main.EXIT_BUTTON.draw(main.win)
 
 def load():
