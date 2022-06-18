@@ -46,14 +46,38 @@ def generateFile():
     with open('data_save.txt', 'w') as data_save_file:
         json.dump(data, data_save_file)
 
+def generateSaveOptionsFile():
+    optionsData = {
+        "musicVolume": musicSlider.value,
+        "soundVolume": soundSlider.value
+    }
+    with open('optionsData.txt', 'w') as data_save_file:
+        json.dump(optionsData, data_save_file)
+
+        
 #MENU
 startBtnWidth, startBtnHeight = WIDTH/6, HEIGHT/8
 playButtonImg = pygame.transform.scale(pygame.image.load('Assets/Buttons/Start_Button.png'),(startBtnWidth,startBtnHeight))
 loadButtonImg = pygame.transform.scale(pygame.image.load('Assets/Buttons/LoadButton.png'),(startBtnWidth,startBtnHeight))
 exitButtonImg = pygame.transform.scale(pygame.image.load('Assets/Buttons/ExitButton.png'),(startBtnWidth,startBtnHeight))
+optionsButtonImg = pygame.transform.scale(pygame.image.load('Assets/Buttons/OptionsButton.png'),(startBtnWidth,startBtnHeight))
 PLAY_BUTTON = Button(WIDTH/2,startBtnHeight+30,playButtonImg)
 LOAD_BUTTON = Button(WIDTH/2,(startBtnHeight+30)*2,loadButtonImg)
-EXIT_BUTTON = Button(WIDTH/2,(startBtnHeight+30)*3,exitButtonImg)
+OPTIONS_BUTTON = Button(WIDTH/2,(startBtnHeight+30)*3,optionsButtonImg)
+EXIT_BUTTON = Button(WIDTH/2,(startBtnHeight+30)*4,exitButtonImg)
+
+
+#OPTIONS
+musicVolume = 1
+soundVolume = 1
+if os.path.exists('optionsData.txt'):
+    with open('optionsData.txt') as data_save_file:
+        optionsData = json.load(data_save_file)
+        musicVolume = optionsData['musicVolume']
+        soundVolume = optionsData['soundVolume']
+
+musicSlider = SLIDER(win, "Music", WIDTH // 2, HEIGHT // 2 + 100, 300, musicVolume)
+soundSlider = SLIDER(win, "Sounds", WIDTH // 2, HEIGHT // 2 - 100, 300, soundVolume)
 
 
 #GAME
@@ -87,11 +111,18 @@ NEXT_BUTTON = Button(WIDTH - startBtnWidth,HEIGHT-startBtnHeight,nextButtonImg)
 RESET_BUTTON = Button(WIDTH - startBtnWidth,HEIGHT-startBtnHeight,resetButtonImg)
 EXIT_TO_MENU_BUTTON = Button(WIDTH // 2, HEIGHT - startBtnHeight, exitToMenuButtonImg)
 
+#SOUNDS
+
 shootingSound = pygame.mixer.Sound('Assets/sounds/shooting.wav')
+shootingSound.set_volume(soundVolume)
 asteroidExplosionSound = pygame.mixer.Sound('Assets/sounds/asteroidexplosin.wav')
+asteroidExplosionSound.set_volume(soundVolume)
 shipExplosionSound = pygame.mixer.Sound('Assets/sounds/shipexplosion.wav')
+shipExplosionSound.set_volume(soundVolume)
 
 bgMusic = pygame.mixer.music.load('Assets/sounds/backgroundMusic.wav')
+pygame.mixer.music.set_volume(musicVolume)
+
 
 #SHOP
 shopBg = pygame.transform.scale(pygame.image.load('Assets/shopBG.png'),(WIDTH,HEIGHT))
