@@ -3,6 +3,7 @@ import main
 from upgradeBar import upgrade
 from fade import fadeOut
 from textWithOutline import Text
+import skinShop
 
 offCenterX = 150
 offCenterY = 70
@@ -10,7 +11,6 @@ offCenterY = 70
 
 def shop():
     if main.run:
-        print(main.shipSpeed)
         speedUpgrade = upgrade(main.shipSpeed, main.WIDTH // 2 - offCenterX, main.HEIGHT // 2 - offCenterY, "Speed")
         dmgUpgrade = upgrade(main.shipDmg, main.WIDTH // 2 + offCenterX, main.HEIGHT // 2 - offCenterY, "Damage")
         healthUpgrade = upgrade(main.shipHealth, main.WIDTH // 2 - offCenterX, main.HEIGHT // 2 + offCenterY, "Health")
@@ -20,6 +20,9 @@ def shop():
         main.clock.tick(main.FPS)
 
         updateShop(speedUpgrade,dmgUpgrade,healthUpgrade,attackSpeedUpgrade)
+
+        if main.SKIN_BUTTON.check():
+            skinShop.shop()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -34,6 +37,7 @@ def drawShop(speedUpgrade,dmgUpgrade,healthUpgrade,attackSpeedUpgrade):
     main.shopText.draw(main.win)
     moneyText = Text(100, 50, f"{main.money}$", 20, (46, 120, 40), True)
     moneyText.draw(main.win)
+    main.SKIN_BUTTON.draw(main.win)
 
     speedUpgrade.draw(main.win)
     dmgUpgrade.draw(main.win)
