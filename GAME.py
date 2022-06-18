@@ -7,7 +7,7 @@ from spaceship import Spaceship, Projectile
 from fade import fadeOut
 from shop import shop
 from textWithOutline import Text
-from particles import moneyEarned,explosion
+from particles import moneyEarned,asteroidExplosion
 
 x = 50
 y = main.HEIGHT / 2
@@ -182,7 +182,7 @@ def game():
                         main.money+=meteor.multiplier
                         main.moneyTexts.append(moneyEarned(meteor.multiplier,30,meteor.x,meteor.y))
                         main.meteorIndexes.append(main.meteors.index(meteor))
-                    main.explosions.append(explosion(10,bullet.x,bullet.y,1))
+                        main.explosions.append(asteroidExplosion(10, meteor.hitbox.x + meteor.width // 2, meteor.hitbox.y + meteor.height // 2, 3))
                     main.bulletIndexes.append(main.bullets.index(bullet))
 
             if SPACESHIP.hitbox.colliderect(meteor.hitbox):
