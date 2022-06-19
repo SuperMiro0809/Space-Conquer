@@ -76,7 +76,7 @@ EXIT_BUTTON = Button(WIDTH/2,(startBtnHeight+30)*4,exitButtonImg)
 
 
 #OPTIONS
-musicVolume = 1
+musicVolume = 0.5
 soundVolume = 1
 if os.path.exists('optionsData.txt'):
     with open('optionsData.txt') as data_save_file:
