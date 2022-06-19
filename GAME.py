@@ -226,18 +226,35 @@ def game():
                 main.bullets.append(Projectile(round(SPACESHIP.rect.x + SPACESHIP.width // 2 + 10),round(SPACESHIP.rect.y + 28), main.win))
         SPACESHIP.update(main.bullets)
 
-        for i in range(len(main.meteorIndexes)):
-            main.meteors.pop(main.meteorIndexes[i]-i)
-        main.meteorIndexes = []
-        for i in range(len(main.bulletIndexes)):
-            main.bullets.pop(main.bulletIndexes[i]-i)
-        main.bulletIndexes = []
-        for i in range(len(main.moneyTextIndexes)):
-            main.moneyTexts.pop(main.moneyTextIndexes[i]-i)
-        main.moneyTextIndexes = []
-        for i in range(len(main.explosionIndexes)):
-            main.explosions.pop(main.explosionIndexes[i]-i)
-        main.explosionIndexes = []
+        try:
+            for i in range(len(main.meteorIndexes)):
+                main.meteors.pop(main.meteorIndexes[i]-i)
+            main.meteorIndexes = []
+        except:
+            print("meteor")
+            main.meteorIndexes = []
+        try:
+            for i in range(len(main.bulletIndexes)):
+                main.bullets.pop(main.bulletIndexes[i]-i)
+            main.bulletIndexes = []
+        except:
+            print("bullet")
+            main.bulletIndexes = []
+        try:
+            for i in range(len(main.moneyTextIndexes)):
+                main.moneyTexts.pop(main.moneyTextIndexes[i]-i)
+            main.moneyTextIndexes = []
+        except:
+            print("money")
+            main.moneyTextIndexes = []
+        try:
+            for i in range(len(main.explosionIndexes)):
+                main.explosions.pop(main.explosionIndexes[i]-i)
+            main.explosionIndexes = []
+        except:
+            print("explosion")
+            main.explosionIndexes = []
+
 
 
         br+=1
