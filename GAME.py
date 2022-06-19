@@ -178,6 +178,7 @@ def game():
             for bullet in main.bullets:
                 if bullet.hitbox.colliderect(meteor.hitbox):
                     if meteor.takeDmg():
+                        main.asteroidExplosionSound.stop()
                         main.asteroidExplosionSound.play()
                         main.money+=meteor.multiplier
                         main.moneyTexts.append(moneyEarned(meteor.multiplier,30,meteor.x,meteor.y))
@@ -192,6 +193,8 @@ def game():
                     previous_time_hit = current_time_hit
                     health -= 1
                     if health == 0:
+                        main.asteroidExplosionSound.stop()
+                        main.shootingSound.stop()
                         main.shipExplosionSound.play()
                         gameOver()
 
@@ -222,6 +225,7 @@ def game():
             current_time = pygame.time.get_ticks()
             if current_time - previous_time > 1000/main.attackSpeed:
                 previous_time = current_time
+                main.shootingSound.stop()
                 main.shootingSound.play()
                 main.bullets.append(Projectile(round(SPACESHIP.rect.x + SPACESHIP.width // 2 + 10),round(SPACESHIP.rect.y + 28), main.win))
         SPACESHIP.update(main.bullets)
