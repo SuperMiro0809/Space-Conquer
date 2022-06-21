@@ -128,7 +128,7 @@ asteroidExplosionSound.set_volume(soundVolume)
 shipExplosionSound = pygame.mixer.Sound('Assets/sounds/shipexplosion.wav')
 shipExplosionSound.set_volume(soundVolume)
 
-bgMusic = pygame.mixer.music.load('Assets/sounds/backgroundMusic.wav')
+bgMusic = pygame.mixer.music.load('Assets/sounds/backgroundMusic.mp3')
 pygame.mixer.music.set_volume(musicVolume)
 
 
