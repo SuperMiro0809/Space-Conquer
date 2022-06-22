@@ -2,7 +2,7 @@ import pygame
 import json
 import os.path
 import main
-from GAME import game
+from GAME import game,bossBattle
 from fade import fadeOut
 from OPTIONS import options
 from skin import Skin
@@ -23,7 +23,10 @@ def menu():
             load()
             main.runMenu = False
             main.runGame = True
-            game()
+            if main.stage == 10:
+                bossBattle()
+            else:
+                game()
             if main.run:
                 drawMenu()
         elif main.EXIT_BUTTON.check():
