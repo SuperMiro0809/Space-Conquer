@@ -51,13 +51,13 @@ class Enemy:
 
 class EnemyProjectile():
     def __init__(self,x,y, surface):
-        self.image = main.ENEMY_PROJECTILE_IMAGE
+        self.image = pygame.transform.scale(main.ENEMY_PROJECTILE_IMAGE,(64,64))
         self.x = x
         self.y = y
         self.surface = surface
         self.vel = 8
     
     def draw(self):
-        self.surface.blit(self.image,(self.x,self.y))
+        self.surface.blit(self.image,(self.x-16,self.y-16))
         self.hitbox = pygame.Rect(self.x, self.y+8, 32, 16)
         pygame.draw.rect(main.win, (255, 0, 0), self.hitbox, 2)
