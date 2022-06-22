@@ -182,6 +182,7 @@ def game():
 
         if minutes == 0 and seconds == 5:
             t.cancel()
+            enemyT.cancel()
 
         if minutes == 0 and seconds == 0:
             finishGame()
@@ -194,6 +195,7 @@ def game():
                 main.bulletIndexes.append(main.bullets.index(bullet))
 
         for bullet in main.enemyBullets:
+            bullet.draw()
             if bullet.x < main.WIDTH and bullet.x > 0:
                 bullet.x -= bullet.vel
             else:
@@ -305,6 +307,14 @@ def game():
             main.meteorIndexes = []
 
         try:
+            for i in range(len(main.enemyBulletsIndexes)):
+                main.enemyBullets.pop(main.enemyBulletsIndexes[i]-i)
+            main.enemyBulletsIndexes = []
+        except:
+            print("meteor")
+            main.meteorIndexes = []
+
+        try:
             for i in range(len(main.enemyIndexes)):
                 main.enemies.pop(main.enemyIndexes[i]-i)
             main.enemyIndexes = []
@@ -319,14 +329,6 @@ def game():
         except:
             print("bullet")
             main.bulletIndexes = []
-
-        try:
-            for i in range(len(main.enemyBulletsIndexes)):
-                main.enemyBullets.pop(main.enemyBulletsIndexes[i]-i)
-            main.enemyBulletsIndexes = []
-        except:
-            print("enemy bullet")
-            main.enemyBulletsIndexes = []
             
         try:
             for i in range(len(main.moneyTextIndexes)):
@@ -349,6 +351,7 @@ def game():
     if main.runMenu == True:
         fadeOut()
     t.cancel()
+    enemyT.cancel()
 
 def bossBattle():
     if main.run:
@@ -434,6 +437,7 @@ def bossBattle():
     if main.runMenu == True:
         fadeOut()
     t.cancel()
+    enemyT.cancel()
 
 
 
@@ -451,13 +455,13 @@ def meteorsGen():
     global t
     METEOR = Meteor(main.WIDTH-10, randint(-34, main.HEIGHT - 68),randint(2*main.stage,4*main.stage))
     main.meteors.append(METEOR)
-    t = threading.Timer(1-main.stage/20, meteorsGen)
+    t = threading.Timer(1-main.stage/40, meteorsGen)
     t.start()
 
 def enemiesSpawn():
     global enemyT
-    if len(main.enemies) < 5:
+    if len(main.enemies) < main.stage:
         enemy = Enemy(main.WIDTH-126, randint(66, main.HEIGHT - 66), randint(2*main.stage,4*main.stage))
         main.enemies.append(enemy)
-    enemyT = threading.Timer(1-main.stage/20, enemiesSpawn)
+    enemyT = threading.Timer(randint(1,30//main.stage), enemiesSpawn)
     enemyT.start()
