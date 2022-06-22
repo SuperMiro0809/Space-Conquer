@@ -510,7 +510,7 @@ def bossBattle():
             end()
     if main.runMenu == True:
         fadeOut()
-    #enemyT.cancel()
+    enemyT.cancel()
 
 
 
@@ -539,7 +539,7 @@ def enemiesSpawn():
     enemyT = threading.Timer(randint(1,30//main.stage), enemiesSpawn)
     enemyT.start()
 def end():
-    #enemyT.cancel()
+    enemyT.cancel()
     main.run = False
     greyOverlay = pygame.Surface((main.WIDTH, main.HEIGHT))
     greyOverlay = greyOverlay.convert()
