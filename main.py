@@ -113,6 +113,7 @@ gameOverText = Text(WIDTH//2,HEIGHT//2,"GAME OVER",60,(255,255,255),False)
 pauseText = Text(WIDTH//2,HEIGHT//2,"PAUSE",60,(255,255,255),False)
 levelCompletedText = Text(WIDTH//2,HEIGHT//2,"LEVEL COMPLETED!",60,(255,255,255),False)
 stageText = Text(WIDTH // 2, HEIGHT // 4, f"LEVEL {stage}", 50, (255, 255, 255), False)
+thanks4playingText = Text(WIDTH // 2, HEIGHT // 4, f"THANKS FOR PLAYING", 50, (255, 255, 255), False)
 timerText = Text(WIDTH // 2, HEIGHT // 4, f"03:00", 50, (255, 255, 255), False)
 
 hp0 = pygame.transform.scale(pygame.image.load('Assets/health/heart0.png'), (17*3, 17*3))
@@ -126,6 +127,7 @@ SHOP_BUTTON = Button(startBtnWidth,HEIGHT-startBtnHeight,shopButtonImg)
 NEXT_BUTTON = Button(WIDTH - startBtnWidth,HEIGHT-startBtnHeight,nextButtonImg)
 RESET_BUTTON = Button(WIDTH - startBtnWidth,HEIGHT-startBtnHeight,resetButtonImg)
 EXIT_TO_MENU_BUTTON = Button(WIDTH // 2, HEIGHT - startBtnHeight, exitToMenuButtonImg)
+gameWon = False
 
 #SOUNDS
 
