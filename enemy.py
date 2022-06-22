@@ -7,16 +7,16 @@ class Enemy:
         self.x = x
         self.y = y
         self.speed_x = 5
-        self.speed_y = 4
+        self.speed_y = 2
         self.width = 126
         self.height = 66
         self.image = main.ENEMY_IMAGE
         self.direction = -1
-        self.vel = 3
+        self.vel = 1
         self.multiplier = multiplier
         self.rect = pygame.Rect(x, y, 50, 50)
         self.hitbox = (self.rect.x + 15, self.rect.y + 15, 90, 45)
-        self.health = self.multiplier
+        self.health = self.multiplier//2
         self.previous_time = pygame.time.get_ticks() - 1000
         self.attackSpeed = 0.5 * main.stage
         self.direction = randint(0, 1)
@@ -44,8 +44,6 @@ class Enemy:
             self.previous_time = current_time
             main.enemyBullets.append(EnemyProjectile(round(self.x - self.width // 2 + 40),round(self.y + 25), main.win))
 
-        for bullet in main.enemyBullets:
-            bullet.draw()
 
     def takeDmg(self):
         self.health -= main.shipDmg
