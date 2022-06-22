@@ -202,8 +202,11 @@ def game():
                 main.enemyBulletsIndexes.append(main.enemyBullets.index(bullet))
             
             if bullet.hitbox.colliderect(SPACESHIP.hitbox):
-                health -= 1
-                if health == 0:
+                current_time_hit = pygame.time.get_ticks()
+                if current_time_hit - previous_time_hit > 1000:
+                    previous_time_hit = current_time_hit
+                    health -= 1
+                    if health == 0:
                         main.shipExplosionSound.play()
                         gameOver()
         
