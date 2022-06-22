@@ -317,8 +317,8 @@ def game():
                 main.enemyBullets.pop(main.enemyBulletsIndexes[i]-i)
             main.enemyBulletsIndexes = []
         except:
-            print("meteor")
-            main.meteorIndexes = []
+            print("enemyBullet")
+            main.enemyBulletsIndexes = []
 
         try:
             for i in range(len(main.enemyIndexes)):
@@ -368,6 +368,7 @@ def bossBattle():
         previous_time = pygame.time.get_ticks() - 1000
         previous_time_hit = pygame.time.get_ticks() - 1000
         boss.bringBoss()
+        enemiesSpawn()
 
     while main.run and not main.runMenu:
         main.clock.tick(main.FPS)
@@ -385,7 +386,52 @@ def bossBattle():
             else:
                 main.bulletIndexes.append(main.bullets.index(bullet))
 
-            #for bullet in main.bullets:
+        for bullet in main.enemyBullets:
+            bullet.draw()
+            if bullet.x < main.WIDTH and bullet.x > 0:
+                bullet.x -= bullet.vel
+            else:
+                main.enemyBulletsIndexes.append(main.enemyBullets.index(bullet))
+
+            if bullet.hitbox.colliderect(SPACESHIP.hitbox):
+                current_time_hit = pygame.time.get_ticks()
+                if current_time_hit - previous_time_hit > 1000:
+                    previous_time_hit = current_time_hit
+                    health -= 1
+                    main.shipExplosionSound.play()
+                    if health == 0:
+                        gameOver()
+
+        for enemy in main.enemies:
+            enemy.draw(main.win)
+            enemy.shoot()
+            enemy.move()
+            if enemy.x < main.WIDTH and enemy.x > 0 - 126:
+                enemy.x -= enemy.vel
+            else:
+                main.enemyIndexes.append(main.enemies.index(enemy))
+
+            for bullet in main.bullets:
+                if bullet.hitbox.colliderect(enemy.hitbox):
+                    if enemy.takeDmg():
+                        main.asteroidExplosionSound.stop()
+                        main.asteroidExplosionSound.play()
+                        main.money += enemy.multiplier
+                        main.moneyTexts.append(moneyEarned(enemy.multiplier, 30, enemy.x, enemy.y))
+                        main.enemyIndexes.append(main.enemies.index(enemy))
+                        main.explosions.append(asteroidExplosion(10, enemy.hitbox.x + enemy.width // 2,enemy.hitbox.y + enemy.height // 2, 3))
+
+                        main.bulletIndexes.append(main.bullets.index(bullet))
+                        main.explosions.append(projectileExplosion(10, bullet.x, bullet.y, 1, main.selectedSkin.title[5]))
+
+                if SPACESHIP.hitbox.colliderect(enemy.hitbox):
+                    current_time_hit = pygame.time.get_ticks()
+                    if current_time_hit - previous_time_hit > 1000:
+                        previous_time_hit = current_time_hit
+                        health -= 1
+                        if health == 0:
+                            main.shipExplosionSound.play()
+                            gameOver()
 
         #spaceship getting hit
         if SPACESHIP.hitbox.colliderect(boss.hitbox1):
@@ -435,6 +481,21 @@ def bossBattle():
         except:
             print("explosion")
             main.explosionIndexes = []
+        try:
+            for i in range(len(main.enemyBulletsIndexes)):
+                main.enemyBullets.pop(main.enemyBulletsIndexes[i]-i)
+            main.enemyBulletsIndexes = []
+        except:
+            print("enemyBullet")
+            main.enemyBulletsIndexes = []
+
+        try:
+            for i in range(len(main.enemyIndexes)):
+                main.enemies.pop(main.enemyIndexes[i]-i)
+            main.enemyIndexes = []
+        except:
+            print("enemy")
+            main.enemyIndexes = []
 
         boss.draw(main.win)
         boss.update()
