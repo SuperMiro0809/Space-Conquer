@@ -18,7 +18,7 @@ class Enemy:
         self.hitbox = (self.rect.x + 15, self.rect.y + 15, 90, 45)
         self.health = self.multiplier//2
         self.previous_time = pygame.time.get_ticks() - 1000
-        self.attackSpeed = 0.5 * main.stage
+        self.attackSpeed = 1+main.stage//8
         self.direction = randint(0, 1)
 
     def draw(self, surface):
