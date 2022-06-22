@@ -208,6 +208,7 @@ def game():
         for enemy in main.enemies:
             enemy.draw(main.win)
             enemy.shoot()
+            enemy.move()
             if enemy.x < main.WIDTH and enemy.x > 0 - 126:
                 enemy.x -= enemy.vel
             else:

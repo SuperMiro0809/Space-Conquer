@@ -19,11 +19,24 @@ class Enemy:
         self.health = self.multiplier
         self.previous_time = pygame.time.get_ticks() - 1000
         self.attackSpeed = 0.5 * main.stage
+        self.direction = randint(0, 1)
 
     def draw(self, surface):
         surface.blit(self.image, (self.x, self.y))
         self.hitbox = pygame.Rect(self.x + 15, self.y + 15, 90, 45)
         pygame.draw.rect(surface, (255, 0, 0), self.hitbox, 2)
+
+    def move(self):
+        if self.direction == 0:
+            if self.y + self.vel <= main.HEIGHT - self.height: 
+                self.y += self.vel
+            else:
+                self.direction = 1
+        else:
+            if self.y - self.vel >= 0:
+                self.y -= self.vel
+            else:
+                self.direction = 0
     
     def shoot(self):
         current_time = pygame.time.get_ticks()
