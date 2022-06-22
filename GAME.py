@@ -8,6 +8,7 @@ from fade import fadeOut
 from shop import shop
 from textWithOutline import Text
 from particles import moneyEarned,asteroidExplosion,projectileExplosion
+from enemy import Enemy
 
 x = 50
 y = main.HEIGHT / 2
@@ -18,6 +19,7 @@ t = None
 
 def gameOver():
     t.cancel()
+    enemyT.cancel()
     main.runGame = False
     greyOverlay = pygame.Surface((main.WIDTH,main.HEIGHT))
     greyOverlay = greyOverlay.convert()
@@ -27,6 +29,7 @@ def gameOver():
     main.gameOverText.draw(main.win)
     main.meteors = []
     main.bullets = []
+    main.enemies = []
     main.explosions = []
     main.moneyTexts = []
     main.SHOP_BUTTON.draw(main.win)
@@ -54,6 +57,7 @@ def gameOver():
 
 def pause():
     t.cancel()
+    enemyT.cancel()
     main.runGame = False
     greyOverlay = pygame.Surface((main.WIDTH,main.HEIGHT))
     greyOverlay = greyOverlay.convert()
@@ -82,6 +86,7 @@ def pause():
 def startGame():
     main.meteors = []
     main.bullets = []
+    main.enemies = []
     main.explosions = []
     main.moneyTexts = []
     main.stageText = Text(main.WIDTH//2,main.HEIGHT//2,f"LEVEL {main.stage}",50,(255,255,255),False)
@@ -92,6 +97,7 @@ def startGame():
 
 def finishGame():
     t.cancel()
+    enemyT.cancel()
     main.stage += 1
     main.runGame = False
     greyOverlay = pygame.Surface((main.WIDTH, main.HEIGHT))
@@ -102,6 +108,7 @@ def finishGame():
     main.levelCompletedText.draw(main.win)
     main.meteors = []
     main.bullets = []
+    main.enemies = []
     main.explosions = []
     main.moneyTexts = []
     main.SHOP_BUTTON.draw(main.win)
@@ -135,6 +142,7 @@ def game():
         startGame()
         health = main.shipHealth
         meteorsGen()
+        enemiesSpawn()
         space_pressed = False
         previous_time = pygame.time.get_ticks() - 1000
         previous_time_hit = pygame.time.get_ticks() - 1000
@@ -167,6 +175,26 @@ def game():
                 bullet.x += bullet.vel
             else:
                 main.bulletIndexes.append(main.bullets.index(bullet))
+        
+        for enemy in main.enemies:
+            enemy.draw(main.win)
+            if enemy.x < main.WIDTH and enemy.x > 0 - 126:
+                enemy.x -= enemy.vel
+            else:
+                main.enemyIndexes.append(main.enemies.index(enemy))
+            
+            for bullet in main.bullets:
+                if bullet.hitbox.colliderect(enemy.hitbox):
+                    if enemy.takeDmg():
+                        main.asteroidExplosionSound.stop()
+                        main.asteroidExplosionSound.play()
+                        main.money += enemy.multiplier
+                        main.moneyTexts.append(moneyEarned(enemy.multiplier, 30, enemy.x, enemy.y))
+                        main.enemyIndexes.append(main.enemies.index(enemy))
+                        main.explosions.append(asteroidExplosion(10, enemy.hitbox.x + enemy.width // 2, enemy.hitbox.y + enemy.height // 2, 3))
+                        
+                    main.bulletIndexes.append(main.bullets.index(bullet))
+                    main.explosions.append(projectileExplosion(10,bullet.x ,bullet.y,1,main.selectedSkin.title[5]))
 
         for meteor in main.meteors:
             meteor.draw(main.win)
@@ -238,6 +266,13 @@ def game():
             print("meteor")
             main.meteorIndexes = []
         try:
+            for i in range(len(main.enemyIndexes)):
+                main.enemies.pop(main.enemyIndexes[i]-i)
+            main.enemyIndexes = []
+        except:
+            print("enemy")
+            main.enemyIndexes = []
+        try:
             for i in range(len(main.bulletIndexes)):
                 main.bullets.pop(main.bulletIndexes[i]-i)
             main.bulletIndexes = []
@@ -284,3 +319,11 @@ def meteorsGen():
     main.meteors.append(METEOR)
     t = threading.Timer(1-main.stage/20, meteorsGen)
     t.start()
+
+def enemiesSpawn():
+    global enemyT
+    if len(main.enemies) < 5:
+        enemy = Enemy(main.WIDTH-126, randint(66, main.HEIGHT - 66), randint(2*main.stage,4*main.stage))
+        main.enemies.append(enemy)
+    enemyT = threading.Timer(1-main.stage/20, enemiesSpawn)
+    enemyT.start()
