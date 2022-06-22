@@ -205,9 +205,9 @@ def game():
                 current_time_hit = pygame.time.get_ticks()
                 if current_time_hit - previous_time_hit > 1000:
                     previous_time_hit = current_time_hit
+                    main.shipExplosionSound.play()
                     health -= 1
                     if health == 0:
-                        main.shipExplosionSound.play()
                         gameOver()
         
         for enemy in main.enemies:
