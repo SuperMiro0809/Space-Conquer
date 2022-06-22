@@ -77,7 +77,10 @@ def load():
 
                     if skin['equipped']:
                         for sk in main.skins:
-                            sk.equipped = False
+                            if not sk.title == skin['title']:
+                                sk.equipped = False
+                            else:
+                                sk.equipped = True
                         main.selectedSkin = s
                         main.SPACESHIP_IMAGE = pygame.transform.scale(pygame.image.load(main.selectedSkin.image), (84, 84))
                         main.SPACESHIP_EXHAUST_IMAGE = pygame.transform.scale(pygame.image.load(main.selectedSkin.exhaust), (32, 32))
