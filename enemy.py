@@ -17,12 +17,36 @@ class Enemy:
         self.rect = pygame.Rect(x, y, 50, 50)
         self.hitbox = (self.rect.x + 15, self.rect.y + 15, 90, 45)
         self.health = self.multiplier
+        self.previous_time = pygame.time.get_ticks() - 1000
+        self.attackSpeed = 0.5 * main.stage
 
     def draw(self, surface):
         surface.blit(self.image, (self.x, self.y))
         self.hitbox = pygame.Rect(self.x + 15, self.y + 15, 90, 45)
         pygame.draw.rect(surface, (255, 0, 0), self.hitbox, 2)
+    
+    def shoot(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.previous_time > 1000 / self.attackSpeed:
+            self.previous_time = current_time
+            main.enemyBullets.append(EnemyProjectile(round(self.x - self.width // 2 + 40),round(self.y + 25), main.win))
+
+        for bullet in main.enemyBullets:
+            bullet.draw()
 
     def takeDmg(self):
         self.health -= main.shipDmg
         return self.health <= 0
+
+class EnemyProjectile():
+    def __init__(self,x,y, surface):
+        self.image = main.ENEMY_PROJECTILE_IMAGE
+        self.x = x
+        self.y = y
+        self.surface = surface
+        self.vel = 8
+    
+    def draw(self):
+        self.surface.blit(self.image,(self.x,self.y))
+        self.hitbox = pygame.Rect(self.x, self.y+8, 32, 16)
+        pygame.draw.rect(main.win, (255, 0, 0), self.hitbox, 2)

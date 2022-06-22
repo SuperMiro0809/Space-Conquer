@@ -8,7 +8,7 @@ from fade import fadeOut
 from shop import shop
 from textWithOutline import Text
 from particles import moneyEarned,asteroidExplosion,projectileExplosion
-from enemy import Enemy
+from enemy import Enemy, EnemyProjectile
 from bossClass import BOSS
 
 x = 50
@@ -31,6 +31,7 @@ def gameOver():
     main.meteors = []
     main.bullets = []
     main.enemies = []
+    main.enemyBullets = []
     main.explosions = []
     main.moneyTexts = []
     main.SHOP_BUTTON.draw(main.win)
@@ -89,11 +90,13 @@ def pause():
                     main.runGame = True
     if main.runGame:
         meteorsGen()
+        enemiesSpawn()
 
 def startGame():
     main.meteors = []
     main.bullets = []
     main.enemies = []
+    main.enemyBullets = []
     main.explosions = []
     main.moneyTexts = []
     main.stageText = Text(main.WIDTH//2,main.HEIGHT//2,f"LEVEL {main.stage}",50,(255,255,255),False)
@@ -116,6 +119,7 @@ def finishGame():
     main.meteors = []
     main.bullets = []
     main.enemies = []
+    main.enemyBullets = []
     main.explosions = []
     main.moneyTexts = []
     main.SHOP_BUTTON.draw(main.win)
@@ -188,9 +192,22 @@ def game():
                 bullet.x += bullet.vel
             else:
                 main.bulletIndexes.append(main.bullets.index(bullet))
+
+        for bullet in main.enemyBullets:
+            if bullet.x < main.WIDTH and bullet.x > 0:
+                bullet.x -= bullet.vel
+            else:
+                main.enemyBulletsIndexes.append(main.enemyBullets.index(bullet))
+            
+            if bullet.hitbox.colliderect(SPACESHIP.hitbox):
+                health -= 1
+                if health == 0:
+                        main.shipExplosionSound.play()
+                        gameOver()
         
         for enemy in main.enemies:
             enemy.draw(main.win)
+            enemy.shoot()
             if enemy.x < main.WIDTH and enemy.x > 0 - 126:
                 enemy.x -= enemy.vel
             else:
@@ -208,6 +225,15 @@ def game():
                         
                     main.bulletIndexes.append(main.bullets.index(bullet))
                     main.explosions.append(projectileExplosion(10,bullet.x ,bullet.y,1,main.selectedSkin.title[5]))
+                
+            if SPACESHIP.hitbox.colliderect(enemy.hitbox):
+                current_time_hit = pygame.time.get_ticks()
+                if current_time_hit - previous_time_hit > 1000:
+                    previous_time_hit = current_time_hit
+                    health -= 1
+                    if health == 0:
+                        main.shipExplosionSound.play()
+                        gameOver()
 
         for meteor in main.meteors:
             meteor.draw(main.win)
@@ -276,6 +302,7 @@ def game():
         except:
             print("meteor")
             main.meteorIndexes = []
+
         try:
             for i in range(len(main.enemyIndexes)):
                 main.enemies.pop(main.enemyIndexes[i]-i)
@@ -283,6 +310,7 @@ def game():
         except:
             print("enemy")
             main.enemyIndexes = []
+
         try:
             for i in range(len(main.bulletIndexes)):
                 main.bullets.pop(main.bulletIndexes[i]-i)
@@ -290,6 +318,15 @@ def game():
         except:
             print("bullet")
             main.bulletIndexes = []
+
+        try:
+            for i in range(len(main.enemyBulletsIndexes)):
+                main.enemyBullets.pop(main.enemyBulletsIndexes[i]-i)
+            main.enemyBulletsIndexes = []
+        except:
+            print("enemy bullet")
+            main.enemyBulletsIndexes = []
+            
         try:
             for i in range(len(main.moneyTextIndexes)):
                 main.moneyTexts.pop(main.moneyTextIndexes[i]-i)
@@ -297,6 +334,7 @@ def game():
         except:
             print("money")
             main.moneyTextIndexes = []
+
         try:
             for i in range(len(main.explosionIndexes)):
                 main.explosions.pop(main.explosionIndexes[i]-i)
