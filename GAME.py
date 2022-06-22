@@ -99,8 +99,11 @@ def startGame():
     main.enemyBullets = []
     main.explosions = []
     main.moneyTexts = []
-    main.stageText = Text(main.WIDTH//2,main.HEIGHT//2,f"LEVEL {main.stage}",50,(255,255,255),False)
-    main.timerText = Text(main.WIDTH - 100, 50, f"03:00", 50, (255, 255, 255), False)
+    if main.stage != 10:
+        main.stageText = Text(main.WIDTH//2,main.HEIGHT//2,f"LEVEL {main.stage}",50,(255,255,255),False)
+        main.timerText = Text(main.WIDTH - 100, 50, f"03:00", 50, (255, 255, 255), False)
+    else:
+        main.stageText = Text(main.WIDTH // 2, main.HEIGHT // 2, f"BOSS BATTLE", 50, (255, 255, 255), False)
     SPACESHIP.image = main.SPACESHIP_IMAGE
     SPACESHIP.exhaust_image = main.SPACESHIP_EXHAUST_IMAGE
     SPACESHIP.resetPos(main.win)
@@ -205,8 +208,8 @@ def game():
                 current_time_hit = pygame.time.get_ticks()
                 if current_time_hit - previous_time_hit > 1000:
                     previous_time_hit = current_time_hit
-                    main.shipExplosionSound.play()
                     health -= 1
+                    main.shipExplosionSound.play()
                     if health == 0:
                         gameOver()
         
@@ -375,6 +378,10 @@ def bossBattle():
         for bullet in main.bullets:
             if bullet.x < main.WIDTH and bullet.x > 0:
                 bullet.x += bullet.vel
+                if bullet.hitbox.colliderect(boss.hitbox1) or bullet.hitbox.colliderect(boss.hitbox2):
+                    boss.takeDamage()
+                    main.bulletIndexes.append(main.bullets.index(bullet))
+                    main.explosions.append(projectileExplosion(10, bullet.x, bullet.y, 1, main.selectedSkin.title[5]))
             else:
                 main.bulletIndexes.append(main.bullets.index(bullet))
 
@@ -389,10 +396,6 @@ def bossBattle():
                 if health == 0:
                     main.shipExplosionSound.play()
                     gameOver()
-        #draw explosions
-        for Explosion in main.explosions:
-            if Explosion.draw(main.win):
-                main.explosionIndexes.append(main.explosions.index(Explosion))
         #check for movement
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -436,11 +439,17 @@ def bossBattle():
         boss.draw(main.win)
         boss.update()
 
+        #draw explosions
+        for Explosion in main.explosions:
+            if Explosion.draw(main.win):
+                main.explosionIndexes.append(main.explosions.index(Explosion))
+
         pygame.display.update()
+        if main.gameWon:
+            end()
     if main.runMenu == True:
         fadeOut()
-    t.cancel()
-    enemyT.cancel()
+    #enemyT.cancel()
 
 
 
@@ -468,3 +477,20 @@ def enemiesSpawn():
         main.enemies.append(enemy)
     enemyT = threading.Timer(randint(1,30//main.stage), enemiesSpawn)
     enemyT.start()
+def end():
+    #enemyT.cancel()
+    main.run = False
+    greyOverlay = pygame.Surface((main.WIDTH, main.HEIGHT))
+    greyOverlay = greyOverlay.convert()
+    greyOverlay.fill((100, 100, 100))
+    greyOverlay.set_alpha(150)
+    main.win.blit(greyOverlay, (0, 0))
+    main.meteors = []
+    main.bullets = []
+    main.enemies = []
+    main.enemyBullets = []
+    main.explosions = []
+    main.moneyTexts = []
+    main.thanks4playingText.draw(main.win)
+    pygame.display.update()
+    pygame.time.delay(10000)
