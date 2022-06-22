@@ -87,13 +87,13 @@ class Spaceship():
 
 class Projectile():
     def __init__(self,x,y, surface):
-        self.image = main.PROJECTILE_IMAGE
+        self.image = pygame.transform.scale(main.PROJECTILE_IMAGE,(64,64))
         self.x = x
         self.y = y
         self.surface = surface
         self.vel = 8
     
     def draw(self):
-        self.surface.blit(self.image,(self.x,self.y))
+        self.surface.blit(self.image,(self.x-18,self.y-17))
         self.hitbox = pygame.Rect(self.x, self.y+8, 32, 16)
         pygame.draw.rect(main.win, (255, 0, 0), self.hitbox, 2)
