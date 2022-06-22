@@ -46,22 +46,22 @@ class Spaceship():
     def movement(self, keys_pressed):
 
 
-        if keys_pressed == pygame.K_d and self.rect.x + main.shipSpeed < main.WIDTH:  #right
-            self.movex += main.shipSpeed
+        if keys_pressed == pygame.K_d and self.rect.x + main.shipSpeed//5 + 3 < main.WIDTH:  #right
+            self.movex += main.shipSpeed//5 + 3
             if self.movex == 0:
-                self.movex +=main.shipSpeed
-        if keys_pressed == pygame.K_a and self.rect.x - 32 - main.shipSpeed > 0:  #left
-            self.movex -= main.shipSpeed
+                self.movex +=main.shipSpeed//5 + 3
+        if keys_pressed == pygame.K_a and self.rect.x - 32 - main.shipSpeed//5 + 3 > 0:  #left
+            self.movex -= main.shipSpeed//5 + 3
             if self.movex == 0:
-                self.movex -=main.shipSpeed
-        if keys_pressed == pygame.K_w and self.rect.y - main.shipSpeed > 0:  #up
-            self.movey -= main.shipSpeed
+                self.movex -=main.shipSpeed//5 + 3
+        if keys_pressed == pygame.K_w and self.rect.y - main.shipSpeed//5 + 3 > 0:  #up
+            self.movey -= main.shipSpeed//5 + 3
             if self.movey == 0:
-                self.movey -=main.shipSpeed
-        if keys_pressed == pygame.K_s and self.rect.y + main.shipSpeed < main.HEIGHT - 84:  #down
-            self.movey += main.shipSpeed
+                self.movey -=main.shipSpeed//5 + 3
+        if keys_pressed == pygame.K_s and self.rect.y + main.shipSpeed//5 + 3 < main.HEIGHT - 84:  #down
+            self.movey += main.shipSpeed//5 + 3
             if self.movey == 0:
-                self.movey +=main.shipSpeed
+                self.movey +=main.shipSpeed//5 + 3
 
     
     def stop(self, keys_pressed):
