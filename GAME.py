@@ -8,6 +8,7 @@ from fade import fadeOut
 from shop import shop
 from textWithOutline import Text
 from particles import moneyEarned,asteroidExplosion,projectileExplosion
+from bossClass import BOSS
 
 x = 50
 y = main.HEIGHT / 2
@@ -45,12 +46,18 @@ def gameOver():
             main.mainMenu.menu()
         elif main.RESET_BUTTON.check():
             fadeOut()
-            game()
+            if main.stage == 10:
+                bossBattle()
+            else:
+                game()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 main.run = False
     if main.runGame:
-        game()
+        if main.stage == 10:
+            bossBattle()
+        else:
+            game()
 
 def pause():
     t.cancel()
@@ -120,12 +127,18 @@ def finishGame():
             main.mainMenu.menu()
         elif main.RESET_BUTTON.check():
             fadeOut()
-            game()
+            if main.stage == 10:
+                bossBattle()
+            else:
+                game()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 main.run = False
     if main.runGame:
-        game()
+        if main.stage == 10:
+            bossBattle()
+        else:
+            game()
 
 def game():
     br = 0
@@ -193,8 +206,6 @@ def game():
                     previous_time_hit = current_time_hit
                     health -= 1
                     if health == 0:
-                        main.asteroidExplosionSound.stop()
-                        main.shootingSound.stop()
                         main.shipExplosionSound.play()
                         gameOver()
 
@@ -259,13 +270,97 @@ def game():
             print("explosion")
             main.explosionIndexes = []
 
-
-
         br+=1
         pygame.display.update()
     if main.runMenu == True:
         fadeOut()
     t.cancel()
+
+def bossBattle():
+    if main.run:
+        startGame()
+        health = main.shipHealth
+        boss = BOSS(main.WIDTH,main.HEIGHT//2,330,160)
+        space_pressed = False
+        previous_time = pygame.time.get_ticks() - 1000
+        previous_time_hit = pygame.time.get_ticks() - 1000
+        boss.bringBoss()
+
+    while main.run and not main.runMenu:
+        main.clock.tick(main.FPS)
+        main.win.blit(main.imageBg, (0, 0))
+        drawHealth(health)
+        SPACESHIP.draw(main.win)
+
+        for bullet in main.bullets:
+            if bullet.x < main.WIDTH and bullet.x > 0:
+                bullet.x += bullet.vel
+            else:
+                main.bulletIndexes.append(main.bullets.index(bullet))
+
+            #for bullet in main.bullets:
+
+        #spaceship getting hit
+        if SPACESHIP.hitbox.colliderect(boss.hitbox1):
+            current_time_hit = pygame.time.get_ticks()
+            if current_time_hit - previous_time_hit > 1000:
+                previous_time_hit = current_time_hit
+                health -= 1
+                if health == 0:
+                    main.shipExplosionSound.play()
+                    gameOver()
+        #draw explosions
+        for Explosion in main.explosions:
+            if Explosion.draw(main.win):
+                main.explosionIndexes.append(main.explosions.index(Explosion))
+        #check for movement
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                SPACESHIP.movement(event.key)
+                if event.key == pygame.K_SPACE:
+                    space_pressed = True
+                elif event.key == pygame.K_ESCAPE:
+                    pause()
+            elif event.type == pygame.KEYUP:
+                SPACESHIP.stop(event.key)
+                if event.key == pygame.K_SPACE:
+                    space_pressed = False
+
+            if event.type == pygame.QUIT:
+                main.run = False
+        #fire a shot
+        if space_pressed:
+            current_time = pygame.time.get_ticks()
+            if current_time - previous_time > 1000/main.attackSpeed:
+                previous_time = current_time
+                main.shootingSound.stop()
+                main.shootingSound.play()
+                main.bullets.append(Projectile(round(SPACESHIP.rect.x + SPACESHIP.width // 2 + 10),round(SPACESHIP.rect.y + 28), main.win))
+        SPACESHIP.update(main.bullets)
+        #delete bullets and explosions
+        try:
+            for i in range(len(main.bulletIndexes)):
+                main.bullets.pop(main.bulletIndexes[i]-i)
+            main.bulletIndexes = []
+        except:
+            print("bullet")
+            main.bulletIndexes = []
+        try:
+            for i in range(len(main.explosionIndexes)):
+                main.explosions.pop(main.explosionIndexes[i]-i)
+            main.explosionIndexes = []
+        except:
+            print("explosion")
+            main.explosionIndexes = []
+
+        boss.draw(main.win)
+        boss.update()
+
+        pygame.display.update()
+    if main.runMenu == True:
+        fadeOut()
+    t.cancel()
+
 
 
 def drawHealth(health):
