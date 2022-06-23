@@ -19,6 +19,8 @@ class BOSS():
         self.healthSkull = pygame.transform.scale(pygame.image.load('Assets/bossSprites/healthSkull.png'),(32,32))
         self.healthBackground = pygame.Rect(self.x+10,self.y-20,self.width - 10,16)
         self.displayedHealth = pygame.Rect(self.x+16,self.y-16,self.width - 20,8)
+        self.previous_time = pygame.time.get_ticks() - 1000
+        self.attackSpeed = 1
 
     def bringBoss(self):
         self.bring = True
@@ -84,6 +86,13 @@ class BOSS():
         pygame.draw.rect(screen, (0, 0, 0), self.healthBackground)
         pygame.draw.rect(screen, (255, 0, 0), self.displayedHealth)
         screen.blit(self.healthSkull, (self.x-16, self.y-30))
+    
+    def shoot(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.previous_time > 1000 / self.attackSpeed:
+            self.previous_time = current_time
+            main.bossBullets.append(BossProjectile(round(self.x - self.width // 2 + 40),round(self.y + 25), main.win))
+
 
     def takeDamage(self):
         self.health -= main.shipDmg
@@ -96,6 +105,17 @@ class BOSS():
         self.moveX = 190
         self.moveY = 0
 
-
+class BossProjectile:
+    def __init__(self,x,y, surface):
+        self.image = pygame.transform.scale(main.BOSS_PROJECTILE_IMAGE,(64,64))
+        self.x = x
+        self.y = y
+        self.surface = surface
+        self.vel = 8
+    
+    def draw(self):
+        self.surface.blit(self.image,(self.x + 50,self.y + 30))
+        self.hitbox = pygame.Rect(self.x + 60, self.y + 55, 40, 16)
+        pygame.draw.rect(main.win, (255, 0, 0), self.hitbox, 2)
 
 

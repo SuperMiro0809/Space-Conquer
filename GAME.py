@@ -67,7 +67,10 @@ def gameOver():
             game()
 
 def pause():
-    t.cancel()
+    try:
+        t.cancel()
+    except:
+        print('no t')
     enemyT.cancel()
     main.runGame = False
     greyOverlay = pygame.Surface((main.WIDTH,main.HEIGHT))
@@ -363,10 +366,10 @@ def game():
     enemyT.cancel()
 
 def bossBattle():
+    boss = BOSS(main.WIDTH,main.HEIGHT//2,330,160)
     if main.run:
         startGame()
         health = main.shipHealth
-        boss = BOSS(main.WIDTH,main.HEIGHT//2,330,160)
         space_pressed = False
         previous_time = pygame.time.get_ticks() - 1000
         previous_time_hit = pygame.time.get_ticks() - 1000
@@ -374,6 +377,7 @@ def bossBattle():
         enemiesSpawn()
 
     while main.run and not main.runMenu:
+        boss.shoot()
         main.clock.tick(main.FPS)
         main.win.blit(main.imageBg, (0, 0))
         drawHealth(health)
@@ -396,6 +400,22 @@ def bossBattle():
             else:
                 main.enemyBulletsIndexes.append(main.enemyBullets.index(bullet))
 
+            if bullet.hitbox.colliderect(SPACESHIP.hitbox):
+                current_time_hit = pygame.time.get_ticks()
+                if current_time_hit - previous_time_hit > 1000:
+                    previous_time_hit = current_time_hit
+                    health -= 1
+                    main.shipExplosionSound.play()
+                    if health == 0:
+                        gameOver()
+
+        for bullet in main.bossBullets:
+            bullet.draw()
+            if bullet.x < main.WIDTH and bullet.x > 0:
+                bullet.x -= bullet.vel
+            else:
+                main.bossBulletsIndexes.append(main.bossBullets.index(bullet))
+            
             if bullet.hitbox.colliderect(SPACESHIP.hitbox):
                 current_time_hit = pygame.time.get_ticks()
                 if current_time_hit - previous_time_hit > 1000:
@@ -477,6 +497,7 @@ def bossBattle():
         except:
             print("bullet")
             main.bulletIndexes = []
+
         try:
             for i in range(len(main.explosionIndexes)):
                 main.explosions.pop(main.explosionIndexes[i]-i)
@@ -484,6 +505,7 @@ def bossBattle():
         except:
             print("explosion")
             main.explosionIndexes = []
+
         try:
             for i in range(len(main.enemyBulletsIndexes)):
                 main.enemyBullets.pop(main.enemyBulletsIndexes[i]-i)
@@ -491,6 +513,14 @@ def bossBattle():
         except:
             print("enemyBullet")
             main.enemyBulletsIndexes = []
+
+        try:
+            for i in range(len(main.bossBulletsIndexes)):
+                main.bossBullets.pop(main.bossBulletsIndexes[i]-i)
+            main.bossBulletsIndexes = []
+        except:
+            print("enemyBullet")
+            main.bossBulletsIndexes = []
 
         try:
             for i in range(len(main.enemyIndexes)):
@@ -541,6 +571,7 @@ def enemiesSpawn():
         main.enemies.append(enemy)
     enemyT = threading.Timer(randint(1,30//main.stage), enemiesSpawn)
     enemyT.start()
+
 def end():
     enemyT.cancel()
     main.run = False
