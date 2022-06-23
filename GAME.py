@@ -19,7 +19,10 @@ SPACESHIP.rect.y = y
 t = None
 
 def gameOver():
-    t.cancel()
+    try:
+        t.cancel()
+    except:
+        print("no t")
     enemyT.cancel()
     main.runGame = False
     greyOverlay = pygame.Surface((main.WIDTH,main.HEIGHT))
@@ -240,8 +243,8 @@ def game():
                 if current_time_hit - previous_time_hit > 1000:
                     previous_time_hit = current_time_hit
                     health -= 1
+                    main.shipExplosionSound.play()
                     if health == 0:
-                        main.shipExplosionSound.play()
                         gameOver()
 
         for meteor in main.meteors:
@@ -268,8 +271,8 @@ def game():
                 if current_time_hit - previous_time_hit > 1000:
                     previous_time_hit = current_time_hit
                     health -= 1
+                    main.shipExplosionSound.play()
                     if health == 0:
-                        main.shipExplosionSound.play()
                         gameOver()
 
         for moneyText in main.moneyTexts:
@@ -424,23 +427,23 @@ def bossBattle():
                         main.bulletIndexes.append(main.bullets.index(bullet))
                         main.explosions.append(projectileExplosion(10, bullet.x, bullet.y, 1, main.selectedSkin.title[5]))
 
-                if SPACESHIP.hitbox.colliderect(enemy.hitbox):
-                    current_time_hit = pygame.time.get_ticks()
-                    if current_time_hit - previous_time_hit > 1000:
-                        previous_time_hit = current_time_hit
-                        health -= 1
-                        if health == 0:
-                            main.shipExplosionSound.play()
-                            gameOver()
+            if SPACESHIP.hitbox.colliderect(enemy.hitbox):
+                current_time_hit = pygame.time.get_ticks()
+                if current_time_hit - previous_time_hit > 1000:
+                    previous_time_hit = current_time_hit
+                    health -= 1
+                    main.shipExplosionSound.play()
+                    if health == 0:
+                        gameOver()
 
         #spaceship getting hit
-        if SPACESHIP.hitbox.colliderect(boss.hitbox1):
+        if SPACESHIP.hitbox.colliderect(boss.hitbox1) or SPACESHIP.hitbox.colliderect(boss.hitbox2):
             current_time_hit = pygame.time.get_ticks()
             if current_time_hit - previous_time_hit > 1000:
                 previous_time_hit = current_time_hit
                 health -= 1
+                main.shipExplosionSound.play()
                 if health == 0:
-                    main.shipExplosionSound.play()
                     gameOver()
         #check for movement
         for event in pygame.event.get():
