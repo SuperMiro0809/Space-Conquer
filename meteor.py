@@ -18,7 +18,6 @@ class Meteor:
         if main.run:
             surface.blit(self.image, (self.x, self.y))
             self.hitbox = pygame.Rect(self.x, self.y,self.width,self.height)
-            pygame.draw.rect(surface, (255, 0, 0), self.hitbox, 2)
 
     def takeDmg(self):
         self.health -= main.shipDmg

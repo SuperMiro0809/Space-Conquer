@@ -24,7 +24,6 @@ class Enemy:
     def draw(self, surface):
         surface.blit(self.image, (self.x, self.y))
         self.hitbox = pygame.Rect(self.x + 15, self.y + 15, 90, 45)
-        pygame.draw.rect(surface, (255, 0, 0), self.hitbox, 2)
 
     def move(self):
         if self.direction == 0:
@@ -60,4 +59,3 @@ class EnemyProjectile():
     def draw(self):
         self.surface.blit(self.image,(self.x-16,self.y-16))
         self.hitbox = pygame.Rect(self.x, self.y+8, 32, 16)
-        pygame.draw.rect(main.win, (255, 0, 0), self.hitbox, 2)

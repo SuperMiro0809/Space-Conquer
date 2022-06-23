@@ -41,7 +41,6 @@ class Spaceship():
         surface.blit(self.image,(self.rect.x,self.rect.y))
         surface.blit(self.exhaust_image,(self.rect.x - 30,self.rect.y + 26))
         self.hitbox = pygame.Rect(self.rect.x, self.rect.y + 20, 84, 41)
-        pygame.draw.rect(surface, (255, 0, 0), self.hitbox, 2)
     
     def movement(self, keys_pressed):
 
@@ -96,4 +95,3 @@ class Projectile():
     def draw(self):
         self.surface.blit(self.image,(self.x-18,self.y-17))
         self.hitbox = pygame.Rect(self.x, self.y+8, 32, 16)
-        pygame.draw.rect(main.win, (255, 0, 0), self.hitbox, 2)

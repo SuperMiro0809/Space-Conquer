@@ -35,6 +35,7 @@ def gameOver():
     main.bullets = []
     main.enemies = []
     main.enemyBullets = []
+    main.bossBullets = []
     main.explosions = []
     main.moneyTexts = []
     main.SHOP_BUTTON.draw(main.win)
@@ -103,6 +104,7 @@ def startGame():
     main.bullets = []
     main.enemies = []
     main.enemyBullets = []
+    main.bossBullets = []
     main.explosions = []
     main.moneyTexts = []
     if main.stage != 10:

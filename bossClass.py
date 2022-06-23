@@ -81,8 +81,6 @@ class BOSS():
 
     def draw(self,screen):
         screen.blit(self.image, (self.x, self.y))
-        pygame.draw.rect(screen, (255, 0, 0), self.hitbox1, 2)
-        pygame.draw.rect(screen, (255, 0, 0), self.hitbox2, 2)
         pygame.draw.rect(screen, (0, 0, 0), self.healthBackground)
         pygame.draw.rect(screen, (255, 0, 0), self.displayedHealth)
         screen.blit(self.healthSkull, (self.x-16, self.y-30))
@@ -116,6 +114,5 @@ class BossProjectile:
     def draw(self):
         self.surface.blit(self.image,(self.x + 50,self.y + 30))
         self.hitbox = pygame.Rect(self.x + 60, self.y + 55, 40, 16)
-        pygame.draw.rect(main.win, (255, 0, 0), self.hitbox, 2)
 
 
