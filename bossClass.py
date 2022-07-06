@@ -114,5 +114,3 @@ class BossProjectile:
     def draw(self):
         self.surface.blit(self.image,(self.x + 50,self.y + 30))
         self.hitbox = pygame.Rect(self.x + 60, self.y + 55, 40, 16)
-
-
