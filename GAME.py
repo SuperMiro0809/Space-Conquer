@@ -18,6 +18,7 @@ SPACESHIP.rect.x = x
 SPACESHIP.rect.y = y
 t = None
 
+#On death
 def gameOver():
     try:
         t.cancel()
@@ -99,6 +100,7 @@ def pause():
         meteorsGen()
         enemiesSpawn()
 
+#Transitioning to the start of each stage
 def startGame():
     main.meteors = []
     main.bullets = []
@@ -116,6 +118,7 @@ def startGame():
     SPACESHIP.exhaust_image = main.SPACESHIP_EXHAUST_IMAGE
     SPACESHIP.resetPos(main.win)
 
+#After defeating stage 10
 def finishGame():
     t.cancel()
     enemyT.cancel()
@@ -162,6 +165,7 @@ def finishGame():
         else:
             game()
 
+#For stages 1 - 9
 def game():
     br = 0
     minutes = 3
@@ -367,6 +371,7 @@ def game():
     t.cancel()
     enemyT.cancel()
 
+#For stage 10(final stage)
 def bossBattle():
     boss = BOSS(main.WIDTH,main.HEIGHT//2,330,160)
     if main.run:
